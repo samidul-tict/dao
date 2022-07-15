@@ -1,3 +1,5 @@
+# Please ignore Lock.sol & Lock.ts. These are sample files.
+
 # Design Exercises - 1:
 
 Per project specs there is no vote delegation; it's not possible for Alice to delegate her voting power to Bob, so that when Bob votes he does so with the voting power of both himself and Alice in a single transaction. This means for someone's vote to count, that person must sign and broadcast their own transaction every time. How would you design your contract to allow for non-transitive vote delegation?
@@ -42,16 +44,3 @@ If SUCCEEDED then there will be a 2 days window to execute the proposal. Any mem
 3. sometimes members may not vote on time or quorum may not reach. in that case proposal will fail.
     in this scenario, we can set proposal = SUCCESS during creation members will have the goal to oppose it. in that way people may vote if they cares.
 4. we are taking the snapshot of all the available members during proposal creation. problem with this approach is, we have  less member to vote.
-
-------------------------------------- Errors Corrected --------------------------------------
-1. **[H-1]** CollectorDAO.sol has a "buyNFT", allows draining of funds. Implemented the buyNFT() function properly in CollectorDAO.sol contract.
-2. **[H-2]** CollectorDAO.sol "execute" function has potential for reenterncy. Fixed the issue by placing the following line before the low lavel call() function in CollectorDAO.sol contract.
-proposal.proposalState = ProposalState.EXECUTED;
-3. **[Technical Mistake]** Proposer can extend the vote time for a proposal indefinitely. Fixed the issue by using the following line in CollectorDAO.sol contract.
-require(proposal.proposer == address(0), "PROPOSAL_ALREADY_EXIST");
-4. **[L-1]** Quorum calculation for DAO with a small number of members is incorrect. Fixed the qorum calculation for small number of voters. Please refer step-152 to 155 in CollectorDAO.sol contract.
-5. **[Extra Feature - 1]** Cancel Function for Proposal. Removed CancelProposal() function from CollectorDAO.sol contract.
-6. **[Q-1]** Proposal object has a lot of variables unnecessarily saved to state (which wastes a lot of gas!). Please refer the updated Proposal struct in ICollectorDAO.sol interface. Also refer getProposalState() function in CollectorDAO.sol contract.
-7. **[Q-2]** Prefer "external" to "public" for execute function. Updated as suggested in CollectorDAO.sol contract.
-8. **[Q-4]** No event for execution. Added the event at line 185 in CollectorDAO.sol contract.
---------------------------------------------- END -------------------------------------------
